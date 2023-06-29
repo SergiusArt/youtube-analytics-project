@@ -2,7 +2,6 @@ import json
 import os
 from googleapiclient.discovery import build
 
-import isodate
 
 class Channel:
     """Класс для ютуб-канала"""
@@ -12,6 +11,10 @@ class Channel:
         self.channel_id = channel_id
         self.api_key = os.getenv('YT_API_KEY')
         self.youtube = build('youtube', 'v3', developerKey=self.api_key)
+
+    def __repr__(self):
+        """ Выводит ID канала к которому првязан класс и наличие соединения по АПИ"""
+        return f'ID канала = {self.channel_id}, API ключ = {len(self.api_key) > 1}'
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
