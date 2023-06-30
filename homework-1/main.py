@@ -1,4 +1,3 @@
-import json
 from src.channel import Channel
 
 if __name__ == '__main__':
