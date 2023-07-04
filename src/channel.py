@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 from googleapiclient.discovery import build
@@ -19,9 +20,65 @@ class Channel:
         self.description = self.channel['items'][0]['snippet']['description']
         self.custom_url = self.channel['items'][0]['snippet']['customUrl']
         self.url = f'https://www.youtube.com/{self.custom_url}'
-        self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
-        self.video_count = self.channel['items'][0]['statistics']['videoCount']
-        self.view_count = self.channel['items'][0]['statistics']['viewCount']
+        self.subscriber_count = int(self.channel['items'][0]['statistics']['subscriberCount'])
+        self.video_count = int(self.channel['items'][0]['statistics']['videoCount'])
+        self.view_count = int(self.channel['items'][0]['statistics']['viewCount'])
+
+    def __str__(self):
+        """
+        Возвращает название и ссылку на канал
+        """
+
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        """
+        Складываются количество подписчиков на каналах
+        """
+
+        return self.subscriber_count + other.subscriber_count
+
+    def __sub__(self, other):
+        """
+        Вычитаются количество подписчиков на каналах
+        """
+
+        return self.subscriber_count - other.subscriber_count
+
+    def __gt__(self, other):
+        """
+        Сравнивается, больше ли первый канал по подписчикам, чем второй
+        """
+
+        return self.subscriber_count > other.subscriber_count
+
+    def __ge__(self, other):
+        """
+        Сравнивается, больше или равен ли первый канал по подписчикам, чем второй
+        """
+
+        return self.subscriber_count >= other.subscriber_count
+
+    def __lt__(self, other):
+        """
+        Сравнивается, меньше ли первый канал по подписчикам, чем второй
+        """
+
+        return self.subscriber_count < other.subscriber_count
+
+    def __le__(self, other):
+        """
+        Сравнивается, меньше или равен ли первый канал по подписчикам, чем второй
+        """
+
+        return self.subscriber_count <= other.subscriber_count
+
+    def __eq__(self, other):
+        """
+        Сравнивается, равен ли первый канал по подписчикам со вторым
+        """
+
+        return self.subscriber_count == other.subscriber_count
 
     @property
     def channel_id(self):
@@ -39,7 +96,7 @@ class Channel:
 
     def to_json(self, path):
         """ Сохраняет в файл значения атрибутов экземпляра """
-        data = self.__dict__
+        data = copy.deepcopy(self.__dict__)
         del data['channel']
         with open(path, 'w') as file:
             json.dump(data, file, indent=2, ensure_ascii=False)
@@ -52,4 +109,4 @@ class Channel:
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
 
-        print(self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute())
+        print(self.channel)
