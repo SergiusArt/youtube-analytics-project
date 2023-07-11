@@ -161,3 +161,4 @@ cython_debug/
 /homework-1/youtube_dir.json
 pytest.ini
 /htmlcov
+homework-4/video_info.json

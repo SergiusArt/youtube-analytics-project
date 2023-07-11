@@ -90,7 +90,7 @@ class Channel:
 
     @classmethod
     def get_service(cls):
-        """ Возвращает объект для работы с TouTube API"""
+        """ Возвращает объект для работы с YouTube API"""
 
         return build('youtube', 'v3', developerKey=cls.api_key)
 
