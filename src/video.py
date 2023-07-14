@@ -9,7 +9,7 @@ class Video(Channel):
         self.video_info = Channel.get_service().videos().list(id=id_video, part='snippet,statistics').execute()
 
         self.title_video = self.video_info['items'][0]['snippet']['title']
-        self.url_video = None
+        self.url_video = f'https://youtu.be/{self.id_video}'
         self.view_count = self.video_info['items'][0]['statistics']['viewCount']
         self.like_count = self.video_info['items'][0]['statistics']['likeCount']
 
